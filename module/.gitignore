@@ -1,0 +1,21 @@
+# app-engine noise
+war/WEB-INF/appengine-generated/*
+
+# netbeans noise
+nbproject/*
+
+# play!framework noise
+tmp/*
+test-result/*
+precompiled/*
+conf/application.conf
+# Textmate - if you build your xcode projects with it
+*.tm_build_errors
+
+# old skool
+.svn
+
+# osx noise
+.DS_Store
+profile
+
