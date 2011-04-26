@@ -6,3 +6,21 @@
 # ~~~~
 
 GET     /?                      Module.index
+
+# Proxy Server
+GET         /proxy/http/{<.+>url}                           URLToolbox.Proxy.get
+GET         /proxy/https/{<.+>url}                          URLToolbox.Proxy.gets
+POST        /proxy/http/{<.+>url}                           URLToolbox.Proxy.post
+POST        /proxy/https/{<.+>url}                          URLToolbox.Proxy.posts
+DELETE      /proxy/http/{<.+>url}                           URLToolbox.Proxy.delete
+DELETE      /proxy/https/{<.+>url}                          URLToolbox.Proxy.deletes
+#PUT        /proxy/http/{<.+>url}                           URLToolbox.Proxy.put
+#PUT        /proxy/https/{<.+>url}                          URLToolbox.Proxy.puts
+
+# Redirector
+*           /redirect/{protocol}/{domain}/{port}/{<.+>url}  URLToolbox.Redirector.redirect
+*           /redirect/{protocol}/{domain}/{port}/           URLToolbox.Redirector.redirect(url:'')
+*           /redirect/{protocol}/{domain}/{port}            URLToolbox.Redirector.redirect
+
+# Renderer
+GET         /render/{<.+>path}                              URLToolbox.Renderer.render
