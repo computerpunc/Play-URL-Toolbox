@@ -4,9 +4,11 @@ import org.junit.*;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
 //import play.libs.WS.WSRequest;
+import play.mvc.Http;
 import play.test.*;
 //import play.mvc.*;
 import play.mvc.Http.*;
+import play.mvc.Router;
 //import models.*;
 
 public class ProxyTest extends FunctionalTest {
@@ -43,7 +45,7 @@ public class ProxyTest extends FunctionalTest {
     @Test
     public void testStatusCode() {
         Response response=GET("/proxy/https/www.googleapis.com/latitude/v1/currentLocation");
-        assertTrue("Didn'get 401 status. Got:"+response.status, 401==response.status);
+        assertStatus(Http.StatusCode.UNAUTHORIZED, response);
     }
 
     @Test
@@ -64,6 +66,21 @@ public class ProxyTest extends FunctionalTest {
     @Test
     public void testDelete() {
         Response response=DELETE("/proxy/http/test.webdav.org/dav/kdjfsi32SDK.txt");
-        assertTrue("Didn't get 404 statis. Got:"+response.status, 404==response.status);
+        assertIsNotFound(response);
+    }
+
+    @Test
+    public void testBlockWhenNotPermited() {
+        String canProxyPropName = "urltoolbox.can-proxy";
+        String canProxyProp=play.Play.configuration.getProperty(canProxyPropName);
+        play.Play.configuration.remove(canProxyPropName);
+
+        Response response=GET("/proxy/http/htmlref.com/ch2/helloworld.html");
+        play.Play.configuration.put(canProxyPropName, canProxyProp);
+        assertStatus(Http.StatusCode.FORBIDDEN, response);
+
+        response=GET("/proxy/http/htmlref.com/ch2/helloworld.html");
+        assertIsOk(response);
+
     }
 }

@@ -3,6 +3,7 @@ package controllers.URLToolbox;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
 import play.libs.WS.WSRequest;
@@ -10,6 +11,12 @@ import play.mvc.*;
 import play.mvc.Http.*;
 
 public class Proxy extends Controller {
+
+    @Before
+    static void checkThatCanProxy() {
+        String canProxy=play.Play.configuration.getProperty("urltoolbox.can-proxy");
+        if ((null==canProxy)||!"true".equals(canProxy)) error(Http.StatusCode.FORBIDDEN, "FORBIDDEN");
+    }
 
     static void handleReponse(HttpResponse directResponse) {
         response.status=directResponse.getStatus();
