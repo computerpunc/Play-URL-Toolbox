@@ -1,0 +1,5 @@
+#{set 'url'}#{doBody /}#{/set}%{
+using=_using;
+if (null!=url) url=url.replaceFirst("http://localhost:9000", "http://"+using+"/http/localhost/9000");
+if (null!=url) url=url.replaceFirst("https://localhost:9000", "https://"+using+"/https/localhost/9000");
+}%${url}
